@@ -1,0 +1,7 @@
+# ide conf ignored
+.idea
+# !ide conf ignored
+
+logs/*
+www/*
+/init/db/dump.sql
