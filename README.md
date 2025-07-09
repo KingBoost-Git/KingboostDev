@@ -3,15 +3,21 @@
 Примечание: сборка предназначена для Linux операционнок (позже добавлю поддержку винды и макосей). Перед запуском добавьте в хост файл адрес локального проекта.
 
 ```bash
-sudo echo '127.0.0.1 kingboost.local' >> /etc/hosts
+sudo nano /etc/hosts
+```
+
+Добавьте в самый конец файла строку
+
+```
+127.0.0.1 kingboost.dev
 ```
 
 #### *Первый запуск:* ####
 ```bash
-cp -rf ~/kingboostdev/init/first.sh ../ &&
-/bin/bash ~/kingboostdev/first.sh &&
-source ~/.bashrc &&
-rm -rf ~/kingboostdev/first.sh
+cp -rf ~/kingboostdev/init/first.sh ~/kingboostdev/first.sh \
+&& /bin/bash ~/kingboostdev/first.sh \
+&& source ~/.bashrc \
+&&rm -rf ~/kingboostdev/first.sh
 ```
 #### *Короткие команды консоли (алиасы)* ####
 
