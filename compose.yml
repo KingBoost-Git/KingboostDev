@@ -19,9 +19,9 @@ services:
 
     # PHP 7.4 fpm Service (with ioncube)
     php74:
+        container_name: php74
         build:
             context: ./images/php74
-        container_name: php74
         restart: unless-stopped
         working_dir: /var/www/html
         volumes:

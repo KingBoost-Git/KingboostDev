@@ -1,47 +1,53 @@
 #!/bin/bash
 
+clear
+
 if [[ $(uname) != 'Linux' ]]; then
   echo 'Script only supports Linux OS'
   exit
 fi
-echo '=== Проверка зависимостей ==='
-if ! [ -x "$(command -v docker)" ]; then
-  echo 'Не установлен docker' >&2
-  exit 1
-fi
-if ! [ -x "$(command -v docker compose)" ]; then
-  echo 'Не установлен docker compose' >&2
-  exit 1
-fi
-if ! [ -x "$(command -v git)" ]; then
-  echo 'Не установлен git' >&2
-  exit 1
-fi
+
+echo '===== ПРОВЕРКА ЗАВИСИМОСТЕЙ ====='
+dep=("docker" "docker compose" "git")
+for module in "${dep[@]}"; do
+  if ! [ -x "$(command -v $module)" ]; then
+    echo "> Не установлен: $module" >&2
+    exit 1
+  fi
+done
 echo '..... все необходимые модули присутствуют .....'
 
-PROJECT_DIR="~/kingboostdev/www"
+# aliases command
+declare -A aliases
+aliases["dup"]="cd $PWD && docker compose up -d --build && cd $HOME"
+aliases["ddown"]="cd $PWD && docker compose down --remove-orphans && cd $HOME"
+aliases["gp"]="cd $PWD/www/ && git pull && cd $HOME"
+aliases["php"]="docker exec -it php74 bash"
 
-if [ -d "$PROJECT_DIR" ]; then
-  mkdir $PROJECT_DIR
-  echo '~~~~~ ЗАПУСК ОКРУЖЕНИЯ ~~~~~'
-  cd ~/kingboostdev && docker compose up -d --build && cd ~
-  echo '~~~~~ ПОДГРУЗКА РЕПОЗИТОРИЯ ~~~~~'
-  cd ~/kingboostdev/www/ && git clone git@github.com:KingBoost-Git/kingboost_dtv.git .
+if ! [ -d $PWD/www/ ]; then
+  mkdir $PWD/www/
+  echo '~~~~~ ЗАГРУЗКА DEV РЕПОЗИТОРИЯ ~~~~~'
+  cd $PWD/www/ && git clone git@github.com:KingBoost-Git/kingboost_dtv.git . && cd ..
   echo '~~~~~ КОПИРОВАНИЕ КОНФИГОВ ~~~~~'
-  cp -r ~/kingboostdev/init/www/* ~/kingboostdev/www/
+  cp -r $PWD/init/www/* $PWD/www/
+  echo '~~~~~ РАЗВОРАЧИВАНИЕ ОКРУЖЕНИЯ ~~~~~'
+  docker compose up -d --build
   echo '~~~~~ НАСТРОЙКА ПРОЕКТА ~~~~~'
-  docker exec -it php74 chown -R www-data:www-data /var/www/html/
+  docker exec -it php74 chown -R www-data:www-data /var/www/html/* > /dev/null
+  echo '> назначен пользователь файлов'
   docker exec -it php74 git config --global --add safe.directory /var/www/html > /dev/null
+  echo '> установлена safe.directory для git'
   docker exec -it php74 rm -rf composer.lock > /dev/null
+  echo '> удален composer.lock'
   docker exec -it php74 composer install
+  echo '> выполнена загрузка зависимостей композер'
   docker exec -it php74 php system/storage/vendor/bin/phinx migrate
-  echo '~~~~~ ДОБАВЛЕНИЕ АЛИАСОВ КОММАНД ЗАПУСКА ~~~~~'
-  echo "alias dup='cd ~/kingboost_for_dev && docker compose up -d --build && cd ~'" >> ~/.bashrc
-  echo '>>> Добавлен алиас: dup'
-  echo "alias ddown='cd ~/kingboost_for_dev && docker compose down --remove-orphans && cd ~'" >> ~/.bashrc
-  echo '>>> Добавлен алиас: ddown'
-  echo "alias gp='cd ~/kingboost_for_dev/www && git pull && cd ~'" >> ~/.bashrc
-  echo '>>> Добавлен алиас: gp'
-  echo "alias php='docker exec -it php74 bash'" >> ~/.bashrc
-  echo '>>> Добавлен алиас: php'
+  echo '> применены миграции'
+  docker exec -it php74 chown -R www-data:www-data /var/www/html/* > /dev/null
+  echo '> назначен пользователь файлов'
+  echo '~~~~~ ДОБАВЛЕНИЕ АЛИАСОВ КОМАНД ЗАПУСКА ~~~~~'
+  for alias in ${!aliases[@]}; do
+    echo "alias $alias='${aliases[$alias]}'" >> ~/.bash_aliases
+    echo "> Добавлен алиас: $alias"
+  done
 fi

@@ -101,6 +101,3 @@ libpng-dev && \
 
 # Cleanup
 RUN rm -rf /usr/src/*
-
-# Chown
-RUN chown -R www-data:www-data /var/www/*

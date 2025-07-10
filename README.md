@@ -2,6 +2,8 @@
 
 Примечание: сборка предназначена для Linux операционнок (позже добавлю поддержку винды и макосей). Перед запуском добавьте в хост файл адрес локального проекта.
 
+ВНИМАНИЕ: Убедитесь в наличии стабильного интернет соединения перед запуском.
+
 ```bash
 sudo nano /etc/hosts
 ```
@@ -14,10 +16,10 @@ sudo nano /etc/hosts
 
 #### *Первый запуск:* ####
 ```bash
-cp -rf ~/kingboostdev/init/first.sh ~/kingboostdev/first.sh \
-&& /bin/bash ~/kingboostdev/first.sh \
+cp -rf ./init/first.sh ./first.sh \
+&& /bin/bash ./first.sh \
 && source ~/.bashrc \
-&&rm -rf ~/kingboostdev/first.sh
+&&rm -rf ./first.sh
 ```
 #### *Короткие команды консоли (алиасы)* ####
 
