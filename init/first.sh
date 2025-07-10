@@ -33,8 +33,6 @@ if ! [ -d $PWD/www/ ]; then
   echo '~~~~~ РАЗВОРАЧИВАНИЕ ОКРУЖЕНИЯ ~~~~~'
   docker compose up -d --build
   echo '~~~~~ НАСТРОЙКА ПРОЕКТА ~~~~~'
-  docker exec -it php74 chown -R www-data:www-data /var/www/html/* > /dev/null
-  echo '> назначен пользователь файлов'
   docker exec -it php74 git config --global --add safe.directory /var/www/html > /dev/null
   echo '> установлена safe.directory для git'
   docker exec -it php74 rm -rf composer.lock > /dev/null
@@ -43,7 +41,7 @@ if ! [ -d $PWD/www/ ]; then
   echo '> выполнена загрузка зависимостей композер'
   docker exec -it php74 php system/storage/vendor/bin/phinx migrate
   echo '> применены миграции'
-  docker exec -it php74 chown -R www-data:www-data /var/www/html/* > /dev/null
+  docker exec -it php74 chown -R 1000:www-data /var/www/html/* > /dev/null
   echo '> назначен пользователь файлов'
   echo '~~~~~ ДОБАВЛЕНИЕ АЛИАСОВ КОМАНД ЗАПУСКА ~~~~~'
   for alias in ${!aliases[@]}; do

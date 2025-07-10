@@ -2,6 +2,6 @@
 .idea
 # !ide conf ignored
 
-/logs/*
-/www/*
+logs/*
+www/*
 /init/db/dump.sql
