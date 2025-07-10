@@ -1,11 +1,11 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'http://kingboost.dev/admin/');
-define('HTTP_CATALOG', 'http://kingboost.dev/');
+define('HTTP_SERVER', 'http://kingboost.local/admin/');
+define('HTTP_CATALOG', 'http://kingboost.local/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://kingboost.dev/admin/');
-define('HTTPS_CATALOG', 'http://kingboost.dev/');
+define('HTTPS_SERVER', 'http://kingboost.local/admin/');
+define('HTTPS_CATALOG', 'http://kingboost.local/');
 
 // DIR
 define('DIR_APPLICATION', '/var/www/html/admin/');

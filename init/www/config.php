@@ -1,9 +1,9 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'http://kingboost.dev/');
+define('HTTP_SERVER', 'http://kingboost.local/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://kingboost.dev/');
+define('HTTPS_SERVER', 'http://kingboost.local/');
 
 // DIR
 define('DIR_APPLICATION', '/var/www/html/catalog/');
