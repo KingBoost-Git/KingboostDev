@@ -23,7 +23,7 @@ libicu-dev && \
 build-essential \
 git \
 curl \
-libonig-dev && \ 
+libonig-dev && \
     apt-get install -y iputils-ping && \
     apt-get -y --no-install-recommends install --fix-missing libcurl4 \
 libcurl4-openssl-dev \
@@ -101,3 +101,5 @@ libpng-dev && \
 
 # Cleanup
 RUN rm -rf /usr/src/*
+
+RUN usermod -aG www-data root
